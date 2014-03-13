@@ -25,17 +25,20 @@
 	top: 0px;
 	left: 0px;
 	background-color: #00b2ef;
-	height: 100%;
+	min-height: 100%;
 	display: none;
+	width: 320px;
 }
 
 .side-nav {
-	margin-top: 40px;
+	margin-top: 46px;
+	padding: 0 15px;
 }
 
 .side-nav ul {
 	list-style: none outside none;
 	padding-left: 0;
+	margin-bottom: 0;
 }
 
 .side-nav li > ul {

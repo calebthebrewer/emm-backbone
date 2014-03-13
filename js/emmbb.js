@@ -1,4 +1,4 @@
-require(["//underscorejs.org/underscore-min.js", "handlebars.min", "jquery.min"], function() {
+require(["//underscorejs.org/underscore-min.js", "jquery.min"], function() {
 	require(["backbone.min", "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js", "//code.jquery.com/ui/1.10.4/jquery-ui.min.js"], function() {
 		var Home = Backbone.View.extend({
 			el: '#main-container',
@@ -18,14 +18,28 @@ require(["//underscorejs.org/underscore-min.js", "handlebars.min", "jquery.min"]
 		});
 		var campaignBuilder = new CampaignBuilder();
 		
+		var BlueprintDesigner = Backbone.View.extend({
+			el: "#main-container",
+			render: function() {
+				var template = _.template($("#blueprintDesigner-template").html());
+				this.$el.html(template);
+			}
+		});
+		var blueprintDesigner = new BlueprintDesigner();
+		
 		var Router = Backbone.Router.extend({
 			routes: {
 				'': 'home',
+				'design/blueprint': 'blueprintDesigner',
 				'build/campaign': 'campaignBuilder'
+			},
+			initialize: function() {
+				this.bind("all", function() {
+					//whenever a route is run, do this
+					emmbb.hideSidebar();
+				});
 			}
 		});
-		
-		
 		
 		var router = new Router();
 		router.on('route:home', function() {
@@ -33,6 +47,9 @@ require(["//underscorejs.org/underscore-min.js", "handlebars.min", "jquery.min"]
 		});
 		router.on('route:campaignBuilder', function() {
 			campaignBuilder.render();
+		});
+		router.on('route:blueprintDesigner', function() {
+			blueprintDesigner.render();
 		});
 		window.router = router;
 		Backbone.history.start();
@@ -53,26 +70,21 @@ require(["//underscorejs.org/underscore-min.js", "handlebars.min", "jquery.min"]
 			});
 		});
 	});
-
-	emmbb.showSidebar = function() {
-		$("#sidebar").show("slide");
-		$("#shades").show("fade");
-	};
-
-	emmbb.hideSidebar = function() {
-		$("#sidebar").hide("slide", "fast");
-		$("#shades").hide("fade", "fast");
-	};
 	
 	emmbb.toggleSidebar = function() {
 		$("#sidebar").toggle("slide", "fast");
 		$("#shades").toggle("fade", "fast");
 	};
+	
+	emmbb.hideSidebar = function() {
+		$("#sidebar").hide("slide", "fast");
+		$("#shades").hide("fade", "fast");
+	};
 
 	emmbb.toggleSubnav = function(container) {
 		emmbb.hideOtherSubnavs(container);
 		//I don't know if we want to do this or not - also it's not perfet yet
-		//	$(container).siblings().toggle("fade");
+	//	$(container).siblings().toggle("fade");
 		$(container).find("ul").first().toggle("blinds");
 	};
 
