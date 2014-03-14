@@ -21,7 +21,7 @@
 			</div>
 		</header>
 			<section id="sidebar">
-				<nav role="navigation" class="side-nav">
+				<nav role="navigation" id="navigation" class="side-nav">
 					<ul>
 						<li>
 							<a href="#" class="subnav-label">Learn</a>
@@ -99,9 +99,33 @@
 		<div id="shades"></div>
 		<div id="main-container" class="container-fluid"></div>
 		<script src="js/require.min.js" data-main="js/emmbb"></script>
+		<script id="navigation-template" type="text/template">
+			<ul>
+				<% _.each(apps, function(app) { %>
+				<li>
+					<a href="<%= app.href(prefix) %>" class="<%= (app.apps) ? 'subnav-label' : '' %>">
+						<%= app.name %>
+					</a>
+					<% 
+					if (app.apps) {
+						print(template({
+							apps: app.apps,
+							prefix: app.href(prefix) + '/',
+							template: template
+						}));
+					} 
+					%>
+				</li>
+				<% }); %>
+			</ul>
+		</script>
 		<script id="home-template" type="text/template">
 			<h2>Welcome</h2>
-			<p><%- somevar %></p>
+			<p><% somevar %></p>
+		</script>
+		<script id="textPage" type="text/x-handlebars-template">
+			<h2><%= name %></h2>
+			<p><%= content %></p>
 		</script>
 		<script id="campaignBuilder-template" type="text/x-handlebars-template">
 			Hello Campaign Builder
