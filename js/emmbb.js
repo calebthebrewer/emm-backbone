@@ -11,12 +11,6 @@ require(["//underscorejs.org/underscore-min.js"], function() {
 });
 
 function backboneReady() {
-	var navigationTemplate = _.template($("#navigation-template").html());
-	$("#navigation").html(navigationTemplate({
-		apps: emmbb.apps,
-		prefix: '#/',
-		template: navigationTemplate
-	}));
 	var Home = Backbone.View.extend({
 		el: '#main-container',
 		render: function() {
@@ -44,9 +38,7 @@ function backboneReady() {
 	});
 	var blueprintDesigner = new BlueprintDesigner();
 	var Router = Backbone.Router.extend({
-		routes: emmbb.generateRoutes(emmbb.apps, {
-			"": "home"
-		}),
+		routes: emmbb.routes(),
 		initialize: function() {
 			this.bind("all", function() {
 				//whenever a route is run, do this
@@ -58,13 +50,19 @@ function backboneReady() {
 	router.on('route:home', function() {
 		home.render();
 	});
-	router.on('route:buildCampaigns', function() {
-		campaignBuilder.render();
-	});
-	router.on('route:designBlueprints', function() {
-		blueprintDesigner.render();
-	});
+	//exposed for emmbb purposes
 	window.router = router;
+
+	//generate backbone objects for emmbb
+	emmbb.generateBackbone();	//could take router as param to avoid exposing router globally
+	//build the nav, hopefully its not too late
+	var navigationTemplate = _.template($("#navigation-template").html());
+	$("#navigation").html(navigationTemplate({
+		apps: emmbb.apps(),
+		prefix: '#/',
+		template: navigationTemplate
+	}));
+	//start the backbone router
 	Backbone.history.start();
 }
 
@@ -81,91 +79,200 @@ function jqueryReady() {
 		emmbb.toggleSubnav($(this).parent());
 	});
 }
-var emmbb = {};
-emmbb.toggleSidebar = function() {
-	$("#sidebar").toggle("slide", "fast");
-	$("#shades").toggle("fade", "fast");
-};
-emmbb.hideSidebar = function() {
-	$("#sidebar").hide("slide", "fast");
-	$("#shades").hide("fade", "fast");
-};
-emmbb.toggleSubnav = function(container) {
-	emmbb.hideOtherSubnavs(container);
-	//I don't know if we want to do this or not - also it's not perfet yet
-	//	$(container).siblings().toggle("fade");
-	$(container).find("ul").first().toggle("blinds");
-};
-emmbb.hideOtherSubnavs = function(container) {
-	$(container).siblings().find("ul").hide("blinds");
-};
-emmbb.generateRoutes = function(apps, routes, prefix) {
-	if (!prefix) prefix = "";
-	_.each(apps, function(app) {
-		if (app.apps) {
-			emmbb.generateRoutes(app.apps, routes, app.href(prefix) + "/");
-		} else {
-			routes[app.href([prefix])] = app.slug;
-		}
-	});
-	return routes;
-};
-emmbb.App = function(options) {
-	//TODO this will only camel case a name "Like This" and not one like-this
-	function camelCase(input) {
-		return input.toLowerCase().replace(/\s(.)/g, function(match, group1) {
-			return group1.toUpperCase();
+
+/**
+ * The wonderful EMM Backbone Singleton..because everyone loves a singleton
+ */
+var emmbb = (function() {
+	//private stuff
+	var apps = [];
+	var routes = {"": "home"};
+
+	function generateBackbone(apps) {
+		_.each(apps, function(app) {
+			if (app.type == "group") {
+				generateBackbone(app.apps());
+			}
+			else {
+				//add route controller
+				router.on("route:" + app.uniqueName, function() {
+					switch (app.type) {
+					default:
+						console.log(app.name + ": " + app.type);
+						break;
+					}
+				});		
+			}
 		});
 	}
-	return {
-		name: options.name,
-		slug: camelCase(options.name),
-		href: function(prefix) {
-			return prefix + options.name.toLowerCase().replace(/\s/g, "+");
-		},
-		apps: options.apps ? options.apps : null
-	};
-};
 
-emmbb.apps = [
-	new emmbb.App({
-		name: "Learn", 
-		apps: [
-			new emmbb.App({name: "Hothweels Report"}),
-			new emmbb.App({name: "Barbie Report"}),
-			new emmbb.App({name: "All Reports"})
-		]
-	}),
-	new emmbb.App({
-		name: "Plan", 
-		apps: [
-			new emmbb.App({
-				name: "Projects", 
-				apps: [
-					new emmbb.App({name: "Hothweels Project"}),
-					new emmbb.App({name: "Barbie Project"}),
-					new emmbb.App({name: "All Projects"})
-				]
-			}),
-			new emmbb.App({name: "Tasks"}),
-			new emmbb.App({name: "Budgets"})
-		]
-	}),
-	new emmbb.App({
-		name: "Design", 
-		apps: [
-			new emmbb.App({name: "Communications"}),
-			new emmbb.App({name: "Blueprints"})
-		]
-	}),
-	new emmbb.App({
-		name: "Build", 
-		apps: [
-			new emmbb.App({name: "Campaigns"}),
-			new emmbb.App({name: "Reports"}),
-			new emmbb.App({name: "Segments"}),
-			new emmbb.App({name: "Offers"}),
-			new emmbb.App({name: "Assets"})
-		]
+	//public stuff
+	var emmbb = {};
+	emmbb.toggleSidebar = function() {
+		$("#sidebar").toggle("slide", "fast");
+		$("#shades").toggle("fade", "fast");
+	};
+	emmbb.hideSidebar = function() {
+		$("#sidebar").hide("slide", "fast");
+		$("#shades").hide("fade", "fast");
+	};
+	emmbb.toggleSubnav = function(container) {
+		emmbb.hideOtherSubnavs(container);
+		//I don't know if we want to do this or not - also it's not perfet yet
+		//	$(container).siblings().toggle("fade");
+		$(container).find("ul").first().toggle("blinds");
+	};
+	emmbb.hideOtherSubnavs = function(container) {
+		$(container).siblings().find("ul").hide("blinds");
+	};
+	emmbb.generateBackbone = function() {
+		generateBackbone(emmbb.apps());
+	};
+	emmbb.App = function(options) {
+		//private things
+		function camelCase(input) {
+			//TODO this will only camel case a name "Like This" and not one like-this
+			return input.toLowerCase().replace(/\s(.)/g, function(match, group1) {
+				return group1.toUpperCase();
+			});
+		}
+
+		function urlEncode(input) {
+			return (input.toLowerCase().replace(/\s/g, "+"))
+		}
+
+		var apps = [];
+
+		//this will one day be an app
+		var app = {};
+		//public things
+		app.name = options.name;
+		app.slug = camelCase(options.name);
+		app.uniqueName = options.parent ? options.parent.slug + "_" + app.slug : app.slug;
+		app.type = options.type ? options.type : "group";
+		app.href = function(prefix) {
+			//make sure we have a valid prefix
+			prefix = prefix ? prefix : "";
+			//concatonate with parent href, if there is a parent
+			prefix = options.parent ? options.parent.href(prefix) + "/" : prefix;
+			//make sure string is url safe
+			return prefix + urlEncode(options.name);
+		};
+		app.createApp = function(options) {
+			if (this.type != "group") throw "App '" + this.name + "'' is not of type 'group' and therefore cannot create child apps.";
+			//pass current app as reference
+			options.parent = this;
+			//construct via prototype
+			var app = new emmbb.App(options);
+			//add route for app
+			emmbb.addRoute(app.href(), app.uniqueName);
+			//add sub level app and return it for maipulation
+			apps.push(app);
+			return app;
+		};
+		app.createAppOnly = function(options) {
+			this.createApp(options);
+			return this;
+		};
+		app.apps = function() {
+			return apps.length > 0 ? apps : null;
+		};
+
+		return app;
+	};
+	//this function exposed for convenience
+	createApp = emmbb.createApp = function(options) {
+		//construct via prototype
+		var app = new emmbb.App(options);
+
+		//add top level app and return it for manipulation
+		apps.push(app);
+		return app;
+	};
+	emmbb.apps = function() {
+		return apps;
+	};
+	emmbb.addRoute = function(path, controller) {
+		if (routes[path]) throw "The following path is being declared too many times: " + path;
+		routes[path] = controller;
+	};
+	emmbb.routes = function() {
+		return routes;
+	};
+
+	return emmbb;
+})();
+
+//top leve app learn, chained with sub level apps
+var learn = createApp({
+		name: "Learn"
 	})
-];
+	.createAppOnly({
+		name: "Product Reports",
+		type: "list"
+	})
+	.createAppOnly({
+		name: "Inventory Reports",
+		type: "table"
+	})
+	.createAppOnly({
+		name: "All Reports",
+		type: "table"
+	});
+
+//top level app plan
+var plan = createApp({
+		name: "Plan"
+	});
+//sub level app projects, chained with sub sub level apps
+var projectsPlan = plan.createApp({
+		name: "Project"
+	})
+	.createAppOnly({
+		name: "Product Project"
+	})
+	.createAppOnly({
+		name: "Inventory Project"
+	})
+	.createAppOnly({
+		name: "All Projects",
+		type: "list"
+	});
+//the rest of plan's sub apps, chained
+plan.createAppOnly({
+		name: "Tasks"
+	})
+	.createAppOnly({
+		name: "Budgets"
+	});
+
+var design = createApp({
+		name: "Design"
+	})
+	.createAppOnly({
+		name: "Communications"
+	})
+	.createAppOnly({
+		name: "Blueprints"
+	});
+
+var build = createApp({
+		name: "Build"
+	})
+	.createAppOnly({
+		name: "Campaigns",
+		type: "table",
+		data: "http://data.table.json..."
+	})
+	.createAppOnly({
+		name: "Reports"
+	})
+	.createAppOnly({
+		name: "Segments"
+	})
+	.createAppOnly({
+		name: "Offers"
+	})
+	.createAppOnly({
+		name: "Assets"
+	});

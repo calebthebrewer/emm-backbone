@@ -22,78 +22,6 @@
 		</header>
 			<section id="sidebar">
 				<nav role="navigation" id="navigation" class="side-nav">
-					<ul>
-						<li>
-							<a href="#" class="subnav-label">Learn</a>
-							<ul>
-								<li>
-									<a href="#">Hotwheels Report</a>
-								</li>
-								<li>
-									<a href="#">Barbie Reports</a>
-								</li>
-								<li>
-									<a href="#">All Reports</a>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="#" class="subnav-label">Plan</a>
-							<ul>
-								<li>
-									<a href="#" class="subnav-label">Projects</a>
-									<ul>
-										<li>
-											<a href="#">Hotwheels Project</a>
-										</li>
-										<li>
-											<a href="#">Barbie Project</a>
-										</li>
-										<li>
-											<a href="#">All Projects</a>
-										</li>
-									</ul>
-								</li>
-								<li>
-									<a href="#">Tasks</a>
-								</li>
-								<li>
-									<a href="#">Budgets</a>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="#" class="subnav-label">Design</a>
-							<ul>
-								<li>
-									<a href="#">Communications</a>
-								</li>
-								<li>
-									<a href="#/design/blueprint">Blueprints</a>
-								</li>
-							</ul>
-						</li>
-						<li>
-							<a href="#" class="subnav-label">Build</a>
-							<ul>
-								<li>
-									<a href="#/build/campaign">Campaigns</a>
-								</li>
-								<li>
-									<a href="#">Reports</a>
-								</li>
-								<li>
-									<a href="#">Segments</a>
-								</li>
-								<li>
-									<a href="#">Offers</a>
-								</li>
-								<li>
-									<a href="#">Assets</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
 				</nav>
 			</section>
 		<div id="shades"></div>
@@ -103,14 +31,14 @@
 			<ul>
 				<% _.each(apps, function(app) { %>
 				<li>
-					<a href="<%= app.href(prefix) %>" class="<%= (app.apps) ? 'subnav-label' : '' %>">
+					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : '' %>">
 						<%= app.name %>
 					</a>
 					<% 
-					if (app.apps) {
+					if (app.apps()) {
 						print(template({
-							apps: app.apps,
-							prefix: app.href(prefix) + '/',
+							apps: app.apps(),
+							prefix: '#/',
 							template: template
 						}));
 					} 
@@ -125,7 +53,7 @@
 		</script>
 		<script id="textPage" type="text/x-handlebars-template">
 			<h2><%= name %></h2>
-			<p><%= content %></p>
+			<p><%= text %></p>
 		</script>
 		<script id="campaignBuilder-template" type="text/x-handlebars-template">
 			Hello Campaign Builder
