@@ -1,49 +1,144 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/emmbb.css">
 	</head>
 	<body>
 		<header role="banner" id="top" class="navbar navbar-fixed-top navbar-inverse">
-			<div class="navbar-inner">
-				<div class="container-fluid">
-					<div class="navbar-header">
-						<button id="sidebar-button" type="button" class="navbar-toggle">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button id="sidebar-button" type="button" class="navbar-toggle">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">EMM One UI Customer Analytics MC Next PoC</a>
+				</div>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a data-toggle="dropdown" role="button" href="#">
+							Account
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a data-toggle="modal" data-target="#login-modal">Login</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</header>
+		<section id="sidebar">
+			<nav role="navigation" id="navigation" class="side-nav"></nav>
+		</section>
+		<div id="shades"></div>
+		<div id="main-container" class="container-fluid"></div>
+		<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
 						</button>
-						<a class="navbar-brand" href="#">EMM One UI Customer Analytics MC Next PoC</a>
+						<h4 class="modal-title" id="myModalLabel">Login</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form" id="login">
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+								<div class="col-sm-10">
+									<input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+								<div class="col-sm-10">
+									<input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox">
+											Remember me
+										</label>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							Cancel
+						</button>
+						<button type="submit" class="btn btn-primary" for="login" data-dismiss="modal">
+							Login
+						</button>
 					</div>
 				</div>
 			</div>
-		</header>
-			<section id="sidebar">
-				<nav role="navigation" id="navigation" class="side-nav">
-				</nav>
-			</section>
-		<div id="shades"></div>
-		<div id="main-container" class="container-fluid"></div>
-		<script src="js/require.min.js" data-main="js/emmbb"></script>
+		</div>
+		<script src="vendor/require.js"></script>
+		<script>
+			requirejs.config({
+				paths: {
+					"jquery": "vendor/jquery",
+					"jquery-ui": "vendor/jquery-ui",
+					"bootstrap": "vendor/bootstrap",
+					"underscore": "vendor/underscore",
+					"backbone": "vendor/backbone",
+					"emmbb": "emmbb/emmbb",
+					"applications": "emmbb/applications",
+					"init": "emmbb/init"
+				},
+				shim: {
+					"jquery-ui": {
+						deps: ["jquery"]
+					},
+					"bootstrap": {
+						deps: ["jquery"]
+					},
+					"backbone": {
+						deps: ["underscore"]
+					}
+				}
+			});
+		
+			require([
+				"jquery",
+				"bootstrap",
+				"jquery-ui",
+				"underscore",
+				"backbone",
+				"emmbb",
+				"applications",
+				"init"
+			]);
+		</script>
 		<script id="navigation-template" type="text/template">
 			<ul>
 				<% _.each(apps, function(app) { %>
+					<% if (!app.hidden) { %>
 				<li>
 					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : '' %>">
 						<%= app.name %>
 					</a>
-					<% 
+					<%
 					if (app.apps()) {
 						print(template({
 							apps: app.apps(),
 							prefix: '#/',
 							template: template
 						}));
-					} 
+					}
 					%>
 				</li>
+					<% } %>
 				<% }); %>
 			</ul>
 		</script>
@@ -51,15 +146,96 @@
 			<h2>Welcome</h2>
 			<p><% somevar %></p>
 		</script>
-		<script id="textPage" type="text/x-handlebars-template">
-			<h2><%= name %></h2>
-			<p><%= text %></p>
+		<script id="text-template" type="text/x-handlebars-template">
+			<h2><%= title %></h2>
+			<p><%= content %></p>
 		</script>
-		<script id="campaignBuilder-template" type="text/x-handlebars-template">
-			Hello Campaign Builder
+		<script id="table-template" type="text/x-handlebars-template">
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<% _.each(headers, function(header) { %>
+					<th><%= header %></th>
+					<% }) %>
+				</tr>
+				</thead>
+				<tbody>
+					<% _.each(rows, function(row) { %>
+					<tr>
+						<% _.each(row, function(column) { %>
+						<td>
+							<%= column %>
+						</td>
+						<% }) %>
+					</tr>
+					<% }) %>
+				</tbody>
+			</table>
 		</script>
-		<script id="blueprintDesigner-template" type="text/x-handlebars-template">
-			Hello Blueprint Designer
+		<script id="form-template" type="text/x-handlebars-template">
+			<h2><%= title %></h2>
+			<form id="<%= submit %>" role="form">
+				<% _.each(fields, function(field) { %>
+				<div class="form-group">	
+					<% if (field.name) { %>
+					<label for="<%= field.name %>"><%= field.label %></label>
+					<% } %>
+					<% switch (field.type) {
+						case 'textarea': %>
+					<textarea name="<%= field.name %>" class="form-control"></textarea>
+						<% break;
+						case 'select': %>
+					<select class="form-control">
+							<% _.each(field.options, function(option) { %>
+						<option value="<%= option.value %>"><%= option.label %></option>
+							<% }) %>
+					</select>
+						<% break;
+						case 'multi': %>
+					<select multiple class="form-control">
+							<% _.each(field.options, function(option) { %>
+						<option value="<%= option.value %>"><%= option.label %></option>
+							<% }) %>
+					</select>
+						<% break;
+						case 'radio': %>
+							<% _.each(field.options, function(option) { %>
+					<div class="radio">
+						<label>
+							<input type="radio" name="<%= field.options.name %>" value="<%= option.value %>">
+							<%= option.label %>
+						</label>
+					</div>
+							<% }) %>
+						<% break;
+						case 'checkbox': %>
+							<% _.each(field.options, function(option) { %>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" name="<%= option.name %>" value="">
+							<%= option.label %>
+						</label>
+					</div>
+							<% }) %>
+						<% break;
+						case 'date': %>
+					<span>no date yet</span>
+						<% break; 
+						default: %>
+					<input type="<%= field.type %>" name="<%= field.name %>" class="form-control">
+						<% break;
+					} %>
+					<% if (field.helper) { %>
+					<p class="help-block"><%= field.helper %></p>
+					<% } %>
+				</div>	
+				<% }) %>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</script>
+		<script id="error-template" type="text/x-handlebars-template">
+			<h1>Oops</h1>
+			<p>Something went wrong when rendering this template, here is some more information that might be helpful:</p><code><%= message %></code>
 		</script>
 	</body>
 </html>
