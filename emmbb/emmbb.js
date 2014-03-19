@@ -16,15 +16,16 @@ var emmbb = (function() {
 				//don't generate a template for groups
 				generateBackbone(app.apps());
 			} else {
-				if (!$("#" + app.type + "-template").length) {
-					//template missing
-					var underscoreTemplate = _.template($("#error-template").html(), {
-						message: "The '" + app.type + "' template is not defined."
-					});
-				} else if (!app.type) {
+				router.on("route:" + app.uniqueName, function() {
+				if (app.type == null) {
 					//type undefined
 					var underscoreTemplate = _.template($("#error-template").html(), {
 						message: "The type for '" + app.name + "' is not defined."
+					});
+				} else if (!$("#" + app.type + "-template").length) {
+					//template missing
+					var underscoreTemplate = _.template($("#error-template").html(), {
+						message: "The '" + app.type + "' template is not defined."
 					});
 				} else if (!app.data) {
 					//data missing
@@ -44,7 +45,7 @@ var emmbb = (function() {
 				});	
 				var template = new Template();
 				//add route controller
-				router.on("route:" + app.uniqueName, function() {
+				
 					template.render();
 				});
 			}
@@ -87,6 +88,10 @@ var emmbb = (function() {
 			});
 			//replace the submit attribute with something we like
 			app.data.submit = submit;
+			//enable the date picker, in case they're into that
+			$(document).on('focus', ".datepicker", function() {
+				$(this).datepicker();
+			});
 			
 			return app;
 		}

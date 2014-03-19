@@ -219,7 +219,7 @@
 							<% }) %>
 						<% break;
 						case 'date': %>
-					<span>no date yet</span>
+					<input type="text" class="form-control datepicker" name="<%= field.name %>">
 						<% break; 
 						default: %>
 					<input type="<%= field.type %>" name="<%= field.name %>" class="form-control">

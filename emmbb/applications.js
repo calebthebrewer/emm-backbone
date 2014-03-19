@@ -138,9 +138,14 @@ learn.createApp({
 var plan = createAppGroup("Plan");
 
 var projectsPlan = plan.createAppGroup("Project");
-projectsPlan.createApp({
-	name: "Product Project"
-});
+var productProjectPlan = projectsPlan.createAppGroup("Product Project");
+var productOneProductProjectPlan = productProjectPlan.createAppGroup("Product One");
+productOneProductProjectPlan.createAppGroup("How Long");
+productOneProductProjectPlan.createAppGroup("Will This");
+productOneProductProjectPlan.createAppGroup("Go On?");
+productProjectPlan.createAppGroup("Product Two");
+productProjectPlan.createAppGroup("Product Three");
+productProjectPlan.createAppGroup("Product Four");
 projectsPlan.createApp({
 	name: "Inventory Project"
 });

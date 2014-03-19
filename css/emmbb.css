@@ -48,6 +48,7 @@ textarea {
 	list-style: none outside none;
 	padding-left: 0;
 	margin-bottom: 0;
+	padding-bottom: 4px;
 }
 
 .side-nav li > ul {
