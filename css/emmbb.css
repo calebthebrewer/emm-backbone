@@ -3,10 +3,6 @@ textarea {
 	min-width: 100%;
 }
 
-#navbar-brand {
-	display: inline-block;
-}
-
 .navbar-toggle {
 	float: left;
 	display: inline-block;
