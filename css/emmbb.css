@@ -48,12 +48,11 @@ textarea {
 	list-style: none outside none;
 	padding-left: 0;
 	margin-bottom: 0;
-	padding-bottom: 4px;
 }
 
 .side-nav li > ul {
 	display: none;
-	padding-left: 10px;
+	padding: 0 0 4px 4px;
 }
 
 .side-nav li > ul {
@@ -72,6 +71,10 @@ textarea {
 	color: black;
 	font-size: 2em;
 	line-height: 2.2em;
+	display: block;
+	width: 100%;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .side-nav a:hover {

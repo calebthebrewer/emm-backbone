@@ -108,12 +108,44 @@ var emmbb = (function() {
 		$("#sidebar").hide("slide", "fast");
 		$("#shades").hide("fade", "fast");
 	};
-	emmbb.toggleSubnav = function(container) {
-		emmbb.hideOtherSubnavs(container);
-		//I don't know if we want to do this or not - also it's not perfet yet
+	
+	function accordionSubNavs(container) {
+		$(container).siblings().find("ul").hide("blinds");
+		$(container).find("ul").first().toggle("blinds");
+	}
+	
+	function resetSubNavs(container) {
+		_.each(container.find("li"), function(li) {
+			$(li).show("blinds");
+			$(li).find("ul").hide("blinds");
+		});
+	}
+	
+	function fancySubNavs(container) {
 		$(container).siblings().toggle("blinds");
 		$(container).find("ul").first().toggle("blinds");
+		resetSubNavs(container);
+	}
+	
+	var fancyMenu = true;
+	emmbb.setFancyMenu = function(value) {
+		if (typeof value !== 'boolean') throw "Must give a boolean value.";
+		fancyMenu = value;
+		
+		if (!value) return "Boring menus it is...";
+		return "Couldn't stand them, could you?";
 	};
+	emmbb.resetMenu = function() {
+		resetSubNavs($("#navigation").first("ul"));
+	};
+	emmbb.toggleSubnav = function(container) {
+		if (fancyMenu) {
+			fancySubNavs(container);
+		} else {
+			accordionSubNavs(container);
+		}
+	};
+	
 	emmbb.hideOtherSubnavs = function(container) {
 		$(container).siblings().find("ul").hide("blinds");
 	};
