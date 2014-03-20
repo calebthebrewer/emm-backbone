@@ -11,22 +11,37 @@ learn.createApp({
 });
 learn.createApp({
 	name: "Inventory Reports",
-	type: "table",
+	type: "complex",
 	data: {
-		headers: ["City", "State", "Population"],
-		rows: [
-			["New York", "New York", "8,336,697"],
-			["Los Angeles", "California", "3,857,799"],
-			["Chicago", "Illinois", "2,714,856"],
-			["Houston", "Texas", "2,160,821"],
-			["Philadelphia", "Pennsylvania", "1,547,607"],
-			["Phoenix", "Arizona", "1,488,750"],
-			["San Antonio", "Texas", "1,382,951"],
-			["San Diego", "California", "1,338,348"],
-			["Dallas", "Texas", "1,241,162"],
-			["San Jose", "California", "982,765"],
-			["Austin", "Texas", "842,592"]
+		applications: [
+		{
+			type: "text",
+			data: {
+				title: "City Inventory",
+				content: "We counted up all the people and where they live. It took us quite a while, so hopefully the numbers don't change for a while."
+			}
+		},
+		{
+			type: "table",
+			data: {
+				headers: ["City", "State", "Population"],
+				rows: [
+					["New York", "New York", "8,336,697"],
+					["Los Angeles", "California", "3,857,799"],
+					["Chicago", "Illinois", "2,714,856"],
+					["Houston", "Texas", "2,160,821"],
+					["Philadelphia", "Pennsylvania", "1,547,607"],
+					["Phoenix", "Arizona", "1,488,750"],
+					["San Antonio", "Texas", "1,382,951"],
+					["San Diego", "California", "1,338,348"],
+					["Dallas", "Texas", "1,241,162"],
+					["San Jose", "California", "982,765"],
+					["Austin", "Texas", "842,592"]
+				]		
+			}
+		}
 		]
+		
 	}
 });
 //I'd like to be able to create this later
@@ -89,46 +104,26 @@ learn.createApp({
 						value: "salary"
 					},
 					{
-						label: "Salary",
-						value: "salary"
+						label: "Location",
+						value: "location"
 					}
 				]
 			},
 			{
-				label: "Checkbox",
-				name: "checkbox",
-				type: "checkbox",
-				options: [
+				type: 'group',
+				layout: 'col-md-6',
+				fields: [
 					{
-						label: "Option 1",
-						name: "option1"
+						label: "Start Date",
+						name: "stateDate",
+						type: "date"
 					},
 					{
-						label: "Option 2",
-						name: "option2"
+						label: "End Date",
+						name: "endDate",
+						type: "date"
 					}
-				],
-			},
-			{
-				label: "Radio Input",
-				name: "radio",
-				type: "radio",
-				options: [
-					{
-						label: "Option 1",
-						value: "option1"
-					},
-					{
-						label: "Option 2",
-						value: "option2"
-					}
-				],
-				helper: "A bunch of fun radios!"
-			},
-			{
-				label: "Date Picker",
-				name: "date",
-				type: "date"
+				]
 			}
 		],
 		submit: {
@@ -143,10 +138,8 @@ var plan = createAppGroup("Plan");
 var projectsPlan = plan.createAppGroup("Project");
 var productProjectPlan = projectsPlan.createAppGroup("Product Project");
 var productOneProductProjectPlan = productProjectPlan.createAppGroup("Product One");
-productOneProductProjectPlan.createAppGroup("How Long");
-productOneProductProjectPlan.createAppGroup("Will This");
-var goOn = productOneProductProjectPlan.createAppGroup("Go On?");
-goOn.createAppGroup("Too Long");
+productOneProductProjectPlan.createAppGroup("Lots Of");
+productOneProductProjectPlan.createAppGroup("Sub Navs");
 productProjectPlan.createAppGroup("Product Two");
 productProjectPlan.createAppGroup("Product Three");
 productProjectPlan.createAppGroup("Product Four");

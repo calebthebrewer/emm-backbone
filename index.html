@@ -15,7 +15,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">EMM UI Pertez</a>
+				<a class="navbar-brand" href="#">EMM UI Peretz</a>
 				<ul class="nav navbar-nav navbar-right pull-right">
 					<li class="dropdown">
 						<a data-toggle="dropdown" role="button" href="#">
@@ -126,9 +126,11 @@
 				<li>
 					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : '' %>">
 						<%= app.name %>
+						<% if (app.apps()) { %>
+						<span class="glyphicon glyphicon-chevron-right pull-right subnav-icon"></span>
+						<% } %>
 					</a>
-					<%
-					if (app.apps()) {
+					<% if (app.apps()) {
 						print(template({
 							apps: app.apps(),
 							prefix: '#/',
@@ -145,11 +147,18 @@
 			<h2>Welcome</h2>
 			<p><% somevar %></p>
 		</script>
-		<script id="text-template" type="text/x-handlebars-template">
+		<script id="complex-template" type="text/template">
+			<%
+			_.each(applications, function(app) {
+				print(emmbb.applicationPartials(app.type, app.data))
+			});
+			%>
+		</script>
+		<script id="text-template" class="application-template" type="text/x-handlebars-template">
 			<h2><%= title %></h2>
 			<p><%= content %></p>
 		</script>
-		<script id="table-template" type="text/x-handlebars-template">
+		<script id="table-template" class="application-template" type="text/x-handlebars-template">
 			<table class="table table-striped">
 				<thead>
 				<tr>
@@ -171,68 +180,91 @@
 				</tbody>
 			</table>
 		</script>
-		<script id="form-template" type="text/x-handlebars-template">
+		<script id="form-template" class="application-template" type="text/template">
 			<h2><%= title %></h2>
 			<form id="<%= submit %>" role="form">
-				<% _.each(fields, function(field) { %>
-				<div class="form-group">	
+			<% _.each(fields, function(field) { %>
+				<div class="form-group <%= typeof layout !== 'undefined' ? layout : '' %>">	
 					<% if (field.name) { %>
 					<label for="<%= field.name %>"><%= field.label %></label>
 					<% } %>
-					<% switch (field.type) {
-						case 'textarea': %>
-					<textarea name="<%= field.name %>" class="form-control"></textarea>
-						<% break;
-						case 'select': %>
-					<select class="form-control">
-							<% _.each(field.options, function(option) { %>
-						<option value="<%= option.value %>"><%= option.label %></option>
-							<% }) %>
-					</select>
-						<% break;
-						case 'multi': %>
-					<select multiple class="form-control">
-							<% _.each(field.options, function(option) { %>
-						<option value="<%= option.value %>"><%= option.label %></option>
-							<% }) %>
-					</select>
-						<% break;
-						case 'radio': %>
-							<% _.each(field.options, function(option) { %>
-					<div class="radio">
-						<label>
-							<input type="radio" name="<%= field.options.name %>" value="<%= option.value %>">
-							<%= option.label %>
-						</label>
-					</div>
-							<% }) %>
-						<% break;
-						case 'checkbox': %>
-							<% _.each(field.options, function(option) { %>
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" name="<%= option.name %>" value="">
-							<%= option.label %>
-						</label>
-					</div>
-							<% }) %>
-						<% break;
-						case 'date': %>
-					<input type="text" class="form-control datepicker" name="<%= field.name %>">
-						<% break; 
-						default: %>
-					<input type="<%= field.type %>" name="<%= field.name %>" class="form-control">
-						<% break;
+					<% if (emmbb.formPartials(field.type)) {
+						print(emmbb.formPartials(field.type, field));
+					} else {
+						print(emmbb.formPartials('default', field));
 					} %>
 					<% if (field.helper) { %>
 					<p class="help-block"><%= field.helper %></p>
 					<% } %>
-				</div>	
-				<% }) %>
-				<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			<% }) %>
+				<button type="submit" class="form-control btn btn-primary">Submit</button>
 			</form>
 		</script>
-		<script id="error-template" type="text/x-handlebars-template">
+		<!-- form input templates -->
+		<script id="group-form-template" class="form-template" type="text/template">
+			<div class="form-section">
+			<% _.each(fields, function(field) { %>
+				<div class="form-group <%= typeof layout !== 'undefined' ? layout : '' %>">	
+					<% if (field.name) { %>
+					<label for="<%= field.name %>"><%= field.label %></label>
+					<% } %>
+					<% if (emmbb.formPartials(field.type)) {
+						print(emmbb.formPartials(field.type, field));
+					} else {
+						print(emmbb.formPartials('default', field));
+					} %>
+					<% if (field.helper) { %>
+					<p class="help-block"><%= field.helper %></p>
+					<% } %>
+				</div>
+			<% }) %>
+			</div>
+		</script>
+		<script id="default-form-template" class="form-template" type="text/template">
+			<input type="<%= type %>" name="<%= name %>" class="form-control">
+		</script>
+		<script id="textarea-form-template" class="form-template" type="text/template">
+			<textarea name="<%= name %>" class="form-control"></textarea>
+		</script>
+		<script id="select-form-template" class="form-template" type="text/template">
+			<select class="form-control">
+					<% _.each(options, function(option) { %>
+				<option value="<%= option.value %>"><%= option.label %></option>
+					<% }) %>
+			</select>
+		</script>
+		<script id="multi-form-template" class="form-template" type="text/template">
+			<select multiple class="form-control">
+					<% _.each(options, function(option) { %>
+				<option value="<%= option.value %>"><%= option.label %></option>
+					<% }) %>
+			</select>
+		</script>
+		<script id="radio-form-template" class="form-template" type="text/template">
+		<% _.each(options, function(option) { %>
+			<div class="radio">
+				<label>
+					<input type="radio" name="<%= field.options.name %>" value="<%= option.value %>">
+					<%= option.label %>
+				</label>
+			</div>
+		<% }) %>
+		</script>
+		<script id="checkbox-form-template" class="form-template" type="text/template">
+		<% _.each(options, function(option) { %>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="<%= option.name %>" value="">
+					<%= option.label %>
+				</label>
+			</div>
+		<% }) %>
+		</script>
+		<script id="date-form-template" class="form-template" type="text/template">
+			Date picker template no present
+		</script>
+		<script id="error-template" type="text/template">
 			<h1>Oops</h1>
 			<p>Something went wrong when rendering this template, here is some more information that might be helpful:</p><code><%= message %></code>
 		</script>

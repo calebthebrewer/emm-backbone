@@ -5,10 +5,12 @@ define(["jquery", "underscore", "backbone"], function($, _, backbone) {
  */
 var emmbb = (function() {
 	//private stuff
-	var apps = [];
-	var routes = {
-		"": "home"
-	};
+	var apps = [],
+		routes = {
+			"": "home"
+		},
+		formTemplates = {},
+		applicationTemplates = {};
 
 	function generateBackbone(apps) {
 		_.each(apps, function(app) {
@@ -44,11 +46,21 @@ var emmbb = (function() {
 					}
 				});	
 				var template = new Template();
-				//add route controller
-				
 					template.render();
 				});
 			}
+		});
+		
+		//generate partial templates
+		$(".form-template").each(function() {
+			var id = this.id.split("-")[0];
+			
+			formTemplates[id] = _.template($(this).html());
+		});
+		$(".application-template").each(function() {
+			var id = this.id.split("-")[0];
+			
+			applicationTemplates[id] = _.template($(this).html());
 		});
 	}
 	
@@ -88,10 +100,6 @@ var emmbb = (function() {
 			});
 			//replace the submit attribute with something we like
 			app.data.submit = submit;
-			//enable the date picker, in case they're into that
-			$(document).on('focus', ".datepicker", function() {
-				$(this).datepicker();
-			});
 			
 			return app;
 		}
@@ -99,6 +107,24 @@ var emmbb = (function() {
 	
 	//public stuff
 	var emmbb = {};
+	
+	function partials(type, partial, data) {
+		var exists = false;
+		//make sure template exists
+		if (type[partial]) exists = true;
+		//if no data present, return status of template
+		if (!data) return exists;
+		//return rendered template
+		return type[partial](data);
+	}
+	emmbb.formPartials = function(partial, data) {
+		return partials(formTemplates, partial, data);
+	};
+	
+	emmbb.applicationPartials = function(partial, data) {
+		return partials(applicationTemplates, partial, data);		
+	};
+	
 	emmbb.getAppRoute = getAppRoute;
 	emmbb.toggleSidebar = function() {
 		$("#sidebar").toggle("slide", "fast");
@@ -110,8 +136,8 @@ var emmbb = (function() {
 	};
 	
 	function accordionSubNavs(container) {
-		$(container).siblings().find("ul").hide("blinds");
-		$(container).find("ul").first().toggle("blinds");
+		$(container).siblings().find("ul").hide("slide");
+		$(container).find("ul").first().toggle("slide");
 	}
 	
 	function resetSubNavs(container) {
