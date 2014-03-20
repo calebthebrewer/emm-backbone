@@ -10,7 +10,7 @@ textarea {
 }
 
 #main-container {
-	margin: 51px 0 15px;
+	margin: 0 0 15px;
 }
 
 #shades {
@@ -36,7 +36,6 @@ textarea {
 }
 
 .side-nav {
-	margin-top: 46px;
 	padding: 0 15px;
 }
 

@@ -40,9 +40,21 @@ define(["emmbb", "applications"], function() {
 	Backbone.history.start();
 
 	//document ready things
-	$("#sidebar-button").click(function() {
+	$(".navbar-toggle").click(function() {
+		
 		emmbb.toggleSidebar();
 	});
+	
+	$(window).resize(function() {
+		resize();
+	});
+	
+	function resize() {
+		$("#sidebar").css("padding-top", $("#top").height() + 5);
+		$("#main-container").css("padding-top", $("#top").height() +5);
+	}
+	resize();
+	
 	$("#shades").click(function() {
 		emmbb.toggleSidebar();
 	});

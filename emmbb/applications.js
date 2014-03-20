@@ -45,49 +45,52 @@ learn.createApp({
 		title: "Reports Form",
 		fields: [
 			{
-				label: "Text Input",
-				name: "textInput",
+				label: "Report Name",
+				name: "reportName",
 				type: "text",
-				helper: "This text area can give you some help, because you obviously need it."
+				helper: "Enter a name for this report."
 				//something here for validation
 			},
 			{
-				label: "Password",
-				name: "password",
-				type: "password"
-			},
-			{
-				label: "Text Area",
-				name: "textArea",
+				label: "Report Description",
+				name: "reportDescription",
 				type: "textarea"
 			},
 			{
-				label: "Select Input",
-				name: "select",
+				label: "Report Type",
+				name: "reportType",
 				type: "select",
 				options: [
 					{
-						label: "Option 1",
-						value: "option1"
+						label: "Recurring",
+						value: "recurring"
 					},
 					{
-						label: "Option 2",
-						value: "option2"
+						label: "Campaign",
+						value: "campaign"
+					},
+					{
+						label: "Just for Fun",
+						value: "justForFun"
 					}
 				]
 			},
 			{
-				label: "Multi-Select Input",
-				name: "multiSelect",
+				label: "Segments",
+				name: "segments",
 				type: "multi",
 				options: [
 					{
-						label: "Option 1",
-						value: "option1"
+						label: "Age",
+						value: "age"
 					},
 					{
-						label: "Option 2",
-						value: "option2"
+						label: "Salary",
+						value: "salary"
+					},
+					{
+						label: "Salary",
+						value: "salary"
 					}
 				]
 			},
