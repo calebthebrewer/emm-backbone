@@ -62,5 +62,8 @@ define(["emmbb", "applications"], function() {
 		e.preventDefault();
 		emmbb.toggleSubnav($(this).parent());
 	});
-	
+	$("#sidebar").on("click", ".nav-link", function(e) {
+		$("#sidebar").find(".active:first").removeClass('active');
+		$(this).addClass("active");
+	});
 });

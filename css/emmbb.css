@@ -78,6 +78,10 @@ textarea {
 	text-decoration: none;
 }
 
+.side-nav a.active {
+	color: #6DF1F1;	
+}
+
 .subnav-icon {
 	position: absolute;
 	left: 260px;

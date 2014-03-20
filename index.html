@@ -5,8 +5,9 @@
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/emmbb.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta lang="en-US">
 	</head>
-	<body>
+	<body dir="lrt">
 		<header role="banner" id="top" class="navbar navbar-fixed-top navbar-inverse">
 			<div class="container-fluid">
 				<button type="button" class="navbar-toggle">
@@ -91,6 +92,7 @@
 					"bootstrap": "vendor/bootstrap",
 					"underscore": "vendor/underscore",
 					"backbone": "vendor/backbone",
+					"i18next": "vendor/i18next",
 					"emmbb": "emmbb/emmbb",
 					"applications": "emmbb/applications",
 					"init": "emmbb/init"
@@ -114,6 +116,7 @@
 				"jquery-ui",
 				"underscore",
 				"backbone",
+				"i18next",
 				"emmbb",
 				"applications",
 				"init"
@@ -124,7 +127,7 @@
 				<% _.each(apps, function(app) { %>
 					<% if (!app.hidden) { %>
 				<li>
-					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : '' %>">
+					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : 'nav-link' %>">
 						<%= app.name %>
 						<% if (app.apps()) { %>
 						<span class="glyphicon glyphicon-chevron-right pull-right subnav-icon"></span>
@@ -150,15 +153,18 @@
 		<script id="complex-template" type="text/template">
 			<%
 			_.each(applications, function(app) {
-				print(emmbb.applicationPartials(app.type, app.data))
+				print(emmbb.applicationPartials(app.type, app.data));
 			});
 			%>
 		</script>
-		<script id="text-template" class="application-template" type="text/x-handlebars-template">
+		<script id="i18n-template" class="global-template" type="text/template">
+			
+		</script>
+		<script id="text-template" class="application-template" type="text/template">
 			<h2><%= title %></h2>
 			<p><%= content %></p>
 		</script>
-		<script id="table-template" class="application-template" type="text/x-handlebars-template">
+		<script id="table-template" class="application-template" type="text/template">
 			<table class="table table-striped">
 				<thead>
 				<tr>

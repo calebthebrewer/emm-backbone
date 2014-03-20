@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "backbone"], function($, _, backbone) {
+define(["jquery", "underscore", "backbone", "i18next"], function($, _, backbone) {
 	
 /**
  * The wonderful EMM Backbone Singleton..because everyone loves a singleton
@@ -123,6 +123,17 @@ var emmbb = (function() {
 	
 	emmbb.applicationPartials = function(partial, data) {
 		return partials(applicationTemplates, partial, data);		
+	};
+	
+	emmbb.accessibility = {
+		setDir: function(dir) {
+			if (["rlt", "ltr"].indexOf(dir) > -1) {
+				$("body").attr('dir', dir);
+			}
+		},
+		setLang: function(lang) {
+			
+		}
 	};
 	
 	emmbb.getAppRoute = getAppRoute;
