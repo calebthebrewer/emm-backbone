@@ -7,5 +7,15 @@
 		"plan": "תכנית",
 		"design": "לעצב",
 		"build": "לבנות"
+	},
+	"page": {
+		"title": "פרץ",
+		"account": "חשבון",
+		"login": "Login",
+		"english": "הגדר לאנגלית",
+		"hebrew": "הגדר לעברית"
+	},
+	"home": {
+		"welcome": "ברוך הבא"
 	}
 }

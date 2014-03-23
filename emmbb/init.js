@@ -2,8 +2,11 @@
 define(["i18next", "emmbb", "applications"], function(i18n) {
 	
 	//before we do anything, start up i18next
-	//i18n.setLng("he");
-	i18n.init({lng: 'en'}, function(t) {
+	var language = $.cookie('emm-lang') ? $.cookie('emm-lang') : 'en';
+	if (language == 'he') {
+		emmbb.accessibility.toggleDir();
+	}
+	i18n.init({lng: language}, function(t) {
 		window.i18n = function(key, options) {
 			var translation = t(key, options);
 			
@@ -39,7 +42,9 @@ define(["i18next", "emmbb", "applications"], function(i18n) {
 	
 		//generate backbone objects for emmbb
 		emmbb.generateBackbone(); //could take router as param to avoid exposing router globally
-		//build the nav, hopefully its not too late
+		//build the nav and header
+		var headerTemplate = _.template($("#header-template").html());
+		$("header").html(headerTemplate());
 		var navigationTemplate = _.template($("#navigation-template").html());
 		$("#navigation").html(navigationTemplate({
 			apps: emmbb.apps(),

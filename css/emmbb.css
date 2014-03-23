@@ -26,7 +26,7 @@ textarea {
 
 #sidebar {
 	z-index: 1001;
-	position: absolute;
+	position: fixed;
 	top: 0px;
 	left: 0px;
 	background-color: #00b2ef;
@@ -41,7 +41,7 @@ textarea {
 
 .side-nav ul {
 	list-style: none outside none;
-	padding-left: 0;
+	padding: 0 40px 0 0;
 	margin-bottom: 0;
 }
 

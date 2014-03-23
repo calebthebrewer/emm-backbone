@@ -2,7 +2,7 @@ define(["emmbb"], function(emmbb) {
 
 var learn = createAppGroup("learn");
 learn.createApp({
-	name: "Product Reports",
+	name: "Text Page",
 	type: "text",
 	data: {
 		title: "What you Need to Know About Product Reports",
@@ -10,7 +10,7 @@ learn.createApp({
 	}
 });
 learn.createApp({
-	name: "Inventory Reports",
+	name: "Data Table",
 	type: "complex",
 	data: {
 		applications: [
@@ -54,7 +54,7 @@ learn.createHiddenApp({
 	}
 });
 learn.createApp({
-	name: "All Reports",
+	name: "Form Fun",
 	type: "form",
 	data: {
 		title: "Reports Form",

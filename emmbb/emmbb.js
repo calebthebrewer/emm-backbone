@@ -1,4 +1,4 @@
-define(["jquery", "underscore", "backbone", "i18next"], function($, _, backbone) {
+define(["jquery", "underscore", "backbone", "i18next", "jquery-cookie"], function($, _, backbone) {
 	
 /**
  * The wonderful EMM Backbone Singleton..because everyone loves a singleton
@@ -127,20 +127,26 @@ var emmbb = (function() {
 	};
 	
 	emmbb.accessibility = {
-		setDir: function(dir) {
-			if (["rtl", "ltr"].indexOf(dir) > -1) {
-				$("body").attr('dir', dir);
-			}
+		toggleDir: function() {
+			$("body").toggleClass('rtl');
+		},
+		setLang: function(lang) {
+			$.cookie('emm-lang', lang);
+			window.location.reload();
+		},
+		rtl: function() {
+			return $.cookie('emm-lang') == 'he';
 		}
 	};
 	
 	emmbb.getAppRoute = getAppRoute;
+	var direction = $.cookie('emm-lang') == "he" ? "right" : "left";
 	emmbb.toggleSidebar = function() {
-		$("#sidebar").toggle("slide", "fast");
+		$("#sidebar").toggle("slide", {direction: direction}, "fast");
 		$("#shades").toggle("fade", "fast");
 	};
 	emmbb.hideSidebar = function() {
-		$("#sidebar").hide("slide", "fast");
+		$("#sidebar").hide("slide", {direction: direction}, "fast");
 		$("#shades").hide("fade", "fast");
 	};
 	

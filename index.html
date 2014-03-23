@@ -2,35 +2,14 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="css/normalize.css">
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 		<link rel="stylesheet" href="css/emmbb.css">
+		<link rel="stylesheet" href="css/bootstrap-rtl.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta lang="en-US">
 	</head>
-	<body dir="lrt">
+	<body>
 		<header role="banner" id="top" class="navbar navbar-fixed-top navbar-inverse">
-			<div class="container-fluid">
-				<button type="button" class="navbar-toggle">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" data-i18n="page.title">EMM UI</a>
-				<ul class="nav navbar-nav navbar-right pull-right">
-					<li class="dropdown">
-						<a data-toggle="dropdown" role="button" href="#">
-							<span data-i18n="page.account">Account</span>
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li>
-								<a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
 		</header>
 		<section id="sidebar">
 			<nav role="navigation" id="navigation" class="side-nav"></nav>
@@ -88,6 +67,7 @@
 			requirejs.config({
 				paths: {
 					"jquery": "vendor/jquery",
+					"jquery-cookie": "vendor/jquery-cookie",
 					"jquery-ui": "vendor/jquery-ui",
 					"bootstrap": "vendor/bootstrap",
 					"underscore": "vendor/underscore",
@@ -98,6 +78,9 @@
 					"init": "emmbb/init"
 				},
 				shim: {
+					"jquery-cookie": {
+						deps: ["jquery"]
+					},
 					"jquery-ui": {
 						deps: ["jquery"]
 					},
@@ -125,6 +108,36 @@
 				"init"
 			]);
 		</script>
+		<script id="header-template" type="text/template">
+			<div class="container-fluid">
+				<button type="button" class="navbar-toggle">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><%= i18n('page.title') %></a>
+				<ul class="nav navbar-nav navbar-right pull-right">
+					<li class="dropdown">
+						<a data-toggle="dropdown" role="button" href="#">
+							<span data-i18n="page.account"><%= i18n('page.account') %></span>
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#" data-toggle="modal" data-target="#login-modal"><%= i18n('page.login') %></a>
+							</li>
+							<li>
+								<a onclick="emmbb.accessibility.setLang('en')"><%= i18n('page.english') %></a>
+							</li>
+							<li>
+								<a onclick="emmbb.accessibility.setLang('he')"><%= i18n('page.hebrew') %></a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</script>
 		<script id="navigation-template" type="text/template">
 			<ul>
 				<% _.each(apps, function(app) { %>
@@ -133,8 +146,11 @@
 					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : 'nav-link' %>">
 						<%= i18n('applicationLabels.' + app.name) %>
 						<% if (app.apps()) { %>
+							<% if (emmbb.accessibility.rtl()) { %>
+						<span class="glyphicon glyphicon-chevron-left pull-right subnav-icon"></span>
+							<% } else { %>
 						<span class="glyphicon glyphicon-chevron-right pull-right subnav-icon"></span>
-						<% } %>
+						<% }} %>
 					</a>
 					<% if (app.apps()) {
 						print(template({
@@ -150,8 +166,10 @@
 			</ul>
 		</script>
 		<script id="home-template" type="text/template">
-			<h2><%= i18n('home.welcome') %></h2>
-			<p><% somevar %></p>
+			<div class="jumbotron">
+				<h1><%= i18n('home.welcome') %></h1>
+				<p><%= i18n('home.info') %></p>	
+			</div>
 		</script>
 		<script id="complex-template" type="text/template">
 			<%
