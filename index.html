@@ -16,11 +16,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">EMM UI Peretz</a>
+				<a class="navbar-brand" href="#" data-i18n="page.title">EMM UI</a>
 				<ul class="nav navbar-nav navbar-right pull-right">
 					<li class="dropdown">
 						<a data-toggle="dropdown" role="button" href="#">
-							Account
+							<span data-i18n="page.account">Account</span>
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
@@ -106,6 +106,9 @@
 					},
 					"backbone": {
 						deps: ["underscore"]
+					},
+					"i18next": {
+						deps: ["jquery"]
 					}
 				}
 			});
@@ -128,7 +131,7 @@
 					<% if (!app.hidden) { %>
 				<li>
 					<a href="<%= app.apps() ? '#' : app.href(prefix) %>" class="<%= (app.apps()) ? 'subnav-label' : 'nav-link' %>">
-						<%= app.name %>
+						<%= i18n('applicationLabels.' + app.name) %>
 						<% if (app.apps()) { %>
 						<span class="glyphicon glyphicon-chevron-right pull-right subnav-icon"></span>
 						<% } %>
@@ -147,7 +150,7 @@
 			</ul>
 		</script>
 		<script id="home-template" type="text/template">
-			<h2>Welcome</h2>
+			<h2><%= i18n('home.welcome') %></h2>
 			<p><% somevar %></p>
 		</script>
 		<script id="complex-template" type="text/template">
@@ -156,9 +159,6 @@
 				print(emmbb.applicationPartials(app.type, app.data));
 			});
 			%>
-		</script>
-		<script id="i18n-template" class="global-template" type="text/template">
-			<%= print(i18n.t(key)) %>
 		</script>
 		<script id="text-template" class="application-template" type="text/template">
 			<h2><%= title %></h2>

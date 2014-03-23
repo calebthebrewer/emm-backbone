@@ -1,0 +1,18 @@
+{
+	"app": {
+		"name": "i18next"
+	},
+	"applicationLabels": {
+		"learn": "Learn",
+		"plan": "Plan",
+		"design": "Design",
+		"build": "Build"
+	},
+	"page": {
+		"title": "EMM UI Peretz",
+		"account": "Account"
+	},
+	"home": {
+		"welcome": "Welcome"
+	}
+}

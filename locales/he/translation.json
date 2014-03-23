@@ -1,0 +1,11 @@
+{
+	"app": {
+		"name": "i18next"
+	},
+	"applicationLabels": {
+		"learn": "ללמוד",
+		"plan": "תכנית",
+		"design": "לעצב",
+		"build": "לבנות"
+	}
+}

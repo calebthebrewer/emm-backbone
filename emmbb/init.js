@@ -1,8 +1,15 @@
 //TODO we should be able to pass emmbb into define's callback
-define(["emmbb", "applications"], function() {
+define(["i18next", "emmbb", "applications"], function(i18n) {
 	
 	//before we do anything, start up i18next
-	i18n.init({lng: "en-US"}, function(t) {
+	//i18n.setLng("he");
+	i18n.init({lng: 'en'}, function(t) {
+		window.i18n = function(key, options) {
+			var translation = t(key, options);
+			
+			if (key != translation) return translation;
+			return key.split(".")[1];
+		};
 
 		var Home = Backbone.View.extend({
 			el: '#main-container',
@@ -39,6 +46,7 @@ define(["emmbb", "applications"], function() {
 			prefix: '#/',
 			template: navigationTemplate
 		}));
+
 		//start the backbone router
 		Backbone.history.start();
 	

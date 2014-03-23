@@ -1,0 +1,11 @@
+{
+	"app": {
+		"name": "i18next"
+	},
+	"applicationLabels": {
+		"learn": "Learn",
+		"plan": "Plan",
+		"design": "Design",
+		"build": "Build"
+	}
+}

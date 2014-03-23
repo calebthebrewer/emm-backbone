@@ -5,12 +5,33 @@ define(["jquery", "underscore", "backbone", "i18next"], function($, _, backbone)
  */
 var emmbb = (function() {
 	//private stuff
-	var apps = [],
+	var	apps = [],
 		routes = {
 			"": "home"
 		},
+		specialTypes = {
+			form: function(app) {
+				var submit = app.uniqueName + "_" + (app.data.submit.name ? app.data.submit.name : "submit");
+				var route = getAppRoute(app.data.submit.after, app.parent);
+				//bind a function to this form
+				$(document).on("submit", "#" + submit, function(e) {
+					e.preventDefault();
+					//some amount of validation should be done here
+					//do something with app.data.submit.action
+					console.log("I can also do something with the data.", this);
+					//we might want to use replace:true to disallow people from 
+					//going back to the form in progress, if thats a thing
+					router.navigate(route, {trigger: true});
+				});
+				//replace the submit attribute with something we like
+				app.data.submit = submit;
+				
+				return app;
+			}
+		},
 		formTemplates = {},
-		applicationTemplates = {};
+		applicationTemplates = {},
+		globalTemplates = {};
 
 	function generateBackbone(apps) {
 		_.each(apps, function(app) {
@@ -83,31 +104,7 @@ var emmbb = (function() {
 		});
 		return "#/" + route;
 	}
-	
-	var specialTypes = {
-		form: function(app) {
-			var submit = app.uniqueName + "_" + (app.data.submit.name ? app.data.submit.name : "submit");
-			var route = getAppRoute(app.data.submit.after, app.parent);
-			//bind a function to this form
-			$(document).on("submit", "#" + submit, function(e) {
-				e.preventDefault();
-				//some amount of validation should be done here
-				//do something with app.data.submit.action
-				console.log("I can also do something with the data.", this);
-				//we might want to use replace:true to disallow people from 
-				//going back to the form in progress, if thats a thing
-				router.navigate(route, {trigger: true});
-			});
-			//replace the submit attribute with something we like
-			app.data.submit = submit;
-			
-			return app;
-		}
-	};
-	
-	//public stuff
-	var emmbb = {};
-	
+
 	function partials(type, partial, data) {
 		var exists = false;
 		//make sure template exists
@@ -117,6 +114,10 @@ var emmbb = (function() {
 		//return rendered template
 		return type[partial](data);
 	}
+	
+	//public stuff
+	var emmbb = {};
+	
 	emmbb.formPartials = function(partial, data) {
 		return partials(formTemplates, partial, data);
 	};
@@ -127,12 +128,9 @@ var emmbb = (function() {
 	
 	emmbb.accessibility = {
 		setDir: function(dir) {
-			if (["rlt", "ltr"].indexOf(dir) > -1) {
+			if (["rtl", "ltr"].indexOf(dir) > -1) {
 				$("body").attr('dir', dir);
 			}
-		},
-		setLang: function(lang) {
-			
 		}
 	};
 	

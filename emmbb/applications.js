@@ -1,6 +1,6 @@
 define(["emmbb"], function(emmbb) {
 
-var learn = createAppGroup("Learn");
+var learn = createAppGroup("learn");
 learn.createApp({
 	name: "Product Reports",
 	type: "text",
@@ -62,6 +62,13 @@ learn.createApp({
 			{
 				label: "Report Name",
 				name: "reportName",
+				type: "text",
+				helper: "Enter a name for this report."
+				//something here for validation
+			},
+			{
+				label: "Hello Word",
+				name: "asdfasdf",
 				type: "text",
 				helper: "Enter a name for this report."
 				//something here for validation
@@ -133,7 +140,7 @@ learn.createApp({
 	}
 });
 
-var plan = createAppGroup("Plan");
+var plan = createAppGroup("plan");
 
 var projectsPlan = plan.createAppGroup("Project");
 var productProjectPlan = projectsPlan.createAppGroup("Product Project");
@@ -157,7 +164,7 @@ plan.createApp({
 	name: "Budgets"
 });
 
-var design = createAppGroup("Design");
+var design = createAppGroup("design");
 design.createApp({
 	name: "Communications"
 });
@@ -165,7 +172,7 @@ design.createApp({
 	name: "Blueprints"
 });
 
-var build = createAppGroup("Build");
+var build = createAppGroup("build");
 build.createApp({
 	name: "Campaigns",
 	type: "complex"
