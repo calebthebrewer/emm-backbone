@@ -3,8 +3,11 @@
 	<head>
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/emmbb.css">
+		<link rel="stylesheet" href="css/bootstrap-accessible.css">
 		<link rel="stylesheet" href="css/bootstrap-rtl.css">
+		<link rel="stylesheet" href="css/datepicker.css">
+		<link rel="stylesheet" href="css/treeview.css">
+		<link rel="stylesheet" href="css/emmbb.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta lang="en-US">
 	</head>
@@ -70,9 +73,11 @@
 					"jquery-cookie": "vendor/jquery-cookie",
 					"jquery-ui": "vendor/jquery-ui",
 					"bootstrap": "vendor/bootstrap",
+					"bootstrap-accessible": "vendor/boostrap-accessible",
 					"underscore": "vendor/underscore",
 					"backbone": "vendor/backbone",
 					"i18next": "vendor/i18next",
+					"datePicker": "vendor/bootstrap-datepicker",
 					"emmbb": "emmbb/emmbb",
 					"applications": "emmbb/applications",
 					"init": "emmbb/init"
@@ -87,6 +92,12 @@
 					"bootstrap": {
 						deps: ["jquery"]
 					},
+					"bootstrap-accessible" : {
+						deps: ["bootstrap"]
+					},
+					"datePicker": {
+						deps: ["jquery", "bootstrap"]
+					},
 					"backbone": {
 						deps: ["underscore"]
 					},
@@ -100,6 +111,7 @@
 				"jquery",
 				"bootstrap",
 				"jquery-ui",
+				"datePicker",
 				"underscore",
 				"backbone",
 				"i18next",
@@ -204,6 +216,258 @@
 				</tbody>
 			</table>
 		</script>
+		<script id="accordion-template" type="text/template">
+			<div class="panel-group" id="accordion">
+				<% _.each(panels, function(panel) { %>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><%= panel.title %></a></h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in">
+						<div class="panel-body"><%= panel.content %></div>
+					</div>
+				</div>
+				<% }) %>
+			</div>
+		</script>
+		<script id="tree-template" type="text/template">
+			<div class="css-treeview">
+				<ul>
+					<li>
+						<input type="checkbox" id="item-0" />
+						<label for="item-0">This Folder is Closed By Default</label>
+						<ul>
+							<li>
+								<input type="checkbox" id="item-0-0" />
+								<label for="item-0-0">Ooops! A Nested Folder</label>
+								<ul>
+									<li>
+										<input type="checkbox" id="item-0-0-0" />
+										<label for="item-0-0-0">Look Ma - No Hands!</label>
+										<ul>
+											<li>
+												<a href="./">First Nested Item</a>
+											</li>
+											<li>
+												<a href="./">Second Nested Item</a>
+											</li>
+											<li>
+												<a href="./">Third Nested Item</a>
+											</li>
+											<li>
+												<a href="./">Fourth Nested Item</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="./">Item 1</a>
+									</li>
+									<li>
+										<a href="./">Item 2</a>
+									</li>
+									<li>
+										<a href="./">Item 3</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<input type="checkbox" id="item-0-1" />
+								<label for="item-0-1">Yet Another One</label>
+								<ul>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<input type="checkbox" id="item-0-2" disabled="disabled" />
+								<label for="item-0-2">Disabled Nested Items</label>
+								<ul>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="./">item</a>
+							</li>
+							<li>
+								<a href="./">item</a>
+							</li>
+							<li>
+								<a href="./">item</a>
+							</li>
+							<li>
+								<a href="./">item</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<input type="checkbox" id="item-1" checked="checked" />
+						<label for="item-1">This One is Open by Default...</label>
+						<ul>
+							<li>
+								<input type="checkbox" id="item-1-0" />
+								<label for="item-1-0">And Contains More Nested Items...</label>
+								<ul>
+									<li>
+										<a href="./">Look Ma - No Hands</a>
+									</li>
+									<li>
+										<a href="./">Another Item</a>
+									</li>
+									<li>
+										<a href="./">And Yet Another</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="./">Lorem</a>
+							</li>
+							<li>
+								<a href="./">Ipsum</a>
+							</li>
+							<li>
+								<a href="./">Dolor</a>
+							</li>
+							<li>
+								<a href="./">Sit Amet</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<input type="checkbox" id="item-2" />
+						<label for="item-2">Can You Believe...</label>
+						<ul>
+							<li>
+								<input type="checkbox" id="item-2-0" />
+								<label for="item-2-0">That This Treeview...</label>
+								<ul>
+									<li>
+										<input type="checkbox" id="item-2-2-0" />
+										<label for="item-2-2-0">Does Not Use Any JavaScript...</label>
+										<ul>
+											<li>
+												<a href="./">But Relies Only</a>
+											</li>
+											<li>
+												<a href="./">On the Power</a>
+											</li>
+											<li>
+												<a href="./">Of CSS3</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a href="./">Item 1</a>
+									</li>
+									<li>
+										<a href="./">Item 2</a>
+									</li>
+									<li>
+										<a href="./">Item 3</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<input type="checkbox" id="item-2-1" />
+								<label for="item-2-1">This is a Folder With...</label>
+								<ul>
+									<li>
+										<a href="./">Some Nested Items...</a>
+									</li>
+									<li>
+										<a href="./">Some Nested Items...</a>
+									</li>
+									<li>
+										<a href="./">Some Nested Items...</a>
+									</li>
+									<li>
+										<a href="./">Some Nested Items...</a>
+									</li>
+									<li>
+										<a href="./">Some Nested Items...</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<input type="checkbox" id="item-2-2" disabled="disabled" />
+								<label for="item-2-2">Disabled Nested Items</label>
+								<ul>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+									<li>
+										<a href="./">item</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		
+		</script>
 		<script id="form-template" class="application-template" type="text/template">
 			<h2><%= title %></h2>
 			<form id="<%= submit %>" role="form">
@@ -286,7 +550,10 @@
 		<% }) %>
 		</script>
 		<script id="date-form-template" class="form-template" type="text/template">
-			Date picker template no present
+			<div class="input-group datepicker" data-date-format="mm-dd-yyyy" data-date="3-24-2014">
+				<input type="date" readonly="" value="3-24-2014" class="form-control date">
+				<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+			</div>
 		</script>
 		<script id="error-template" type="text/template">
 			<h1>Oops</h1>

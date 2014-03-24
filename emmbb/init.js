@@ -82,6 +82,15 @@ define(["i18next", "emmbb", "applications"], function(i18n) {
 			$("#sidebar").find(".active:first").removeClass('active');
 			$(this).addClass("active");
 		});
+		
+		$(document).on("click", ".datepicker", function(e) {
+			if (!$(this).datapickerSet) {
+				var $date = $(this).find('.date');
+				$date.datepicker();
+				$date.datepicker('show');
+				$(this).datepickerSet = true;
+			}
+		});
 	
 	});
 });

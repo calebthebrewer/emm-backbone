@@ -17,6 +17,6 @@
 	},
 	"home": {
 		"welcome": "Backbone Demo",
-		"info": "I used Backbone.js to give this application stateful structure which enhances RESTful communication with external resources. By default, this is a single page application powered by Backbone's Router and Underscore's templating engine. Any of the components used could be easily swapped out or used in tandem with other technologies."
+		"info": "A stateful, single page application powered by Backbone.js"
 	}
 }

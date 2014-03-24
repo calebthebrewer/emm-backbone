@@ -8,7 +8,9 @@ textarea {
 	display: inline-block;
 	margin-left: 15px;
 }
-
+input.date {
+	cursor: pointer !important;
+}
 #main-container {
 	margin: 0 0 15px;
 }
