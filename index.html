@@ -510,22 +510,22 @@
 			</div>
 		</script>
 		<script id="default-form-template" class="form-template" type="text/template">
-			<input type="<%= type %>" name="<%= name %>" class="form-control">
+			<input type="<%= type %>" name="<%= name %>" class="form-control" aria-label="<%= name %>">
 		</script>
 		<script id="textarea-form-template" class="form-template" type="text/template">
-			<textarea name="<%= name %>" class="form-control"></textarea>
+			<textarea name="<%= name %>" class="form-control" aria-label="<%= name %>"></textarea>
 		</script>
 		<script id="select-form-template" class="form-template" type="text/template">
 			<select class="form-control">
 					<% _.each(options, function(option) { %>
-				<option value="<%= option.value %>"><%= option.label %></option>
+				<option value="<%= option.value %>" aria-label="<%= name + ' ' + option.value %>"><%= option.label %></option>
 					<% }) %>
 			</select>
 		</script>
 		<script id="multi-form-template" class="form-template" type="text/template">
 			<select multiple class="form-control">
 					<% _.each(options, function(option) { %>
-				<option value="<%= option.value %>"><%= option.label %></option>
+				<option value="<%= option.value %>" aria-label="<%= name + ' ' + option.value %>"><%= option.label %></option>
 					<% }) %>
 			</select>
 		</script>
@@ -533,7 +533,7 @@
 		<% _.each(options, function(option) { %>
 			<div class="radio">
 				<label>
-					<input type="radio" name="<%= field.options.name %>" value="<%= option.value %>">
+					<input type="radio" name="<%= field.options.name %>" value="<%= option.value %>" aria-label="<%= name %>">
 					<%= option.label %>
 				</label>
 			</div>
@@ -543,7 +543,7 @@
 		<% _.each(options, function(option) { %>
 			<div class="checkbox">
 				<label>
-					<input type="checkbox" name="<%= option.name %>" value="">
+					<input type="checkbox" name="<%= option.name %>" value="" aria-label="<%= name %>">
 					<%= option.label %>
 				</label>
 			</div>
@@ -551,7 +551,7 @@
 		</script>
 		<script id="date-form-template" class="form-template" type="text/template">
 			<div class="input-group datepicker" data-date-format="mm-dd-yyyy" data-date="3-24-2014">
-				<input type="date" readonly="" value="3-24-2014" class="form-control date">
+				<input type="date" readonly="" aria-disabled="false" value="3-24-2014" class="form-control date" aria-label="<%= name %>">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 			</div>
 		</script>

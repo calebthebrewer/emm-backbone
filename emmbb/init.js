@@ -83,14 +83,16 @@ define(["i18next", "emmbb", "applications"], function(i18n) {
 			$(this).addClass("active");
 		});
 		
-		$(document).on("click", ".datepicker", function(e) {
+		$(document).on("focus", ".datepicker", function(e) {
 			if (!$(this).datapickerSet) {
 				var $date = $(this).find('.date');
-				$date.datepicker();
+				$date.datepicker({
+					language: $.cookie('emm-lang')
+				});
 				$date.datepicker('show');
 				$(this).datepickerSet = true;
 			}
+			$date.datepicker('show');
 		});
-	
 	});
 });
